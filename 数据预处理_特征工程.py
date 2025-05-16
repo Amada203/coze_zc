@@ -125,44 +125,43 @@ def add_price_features(df):
     # 按sku_id分组计算特征
     grouped = df.groupby('sku_id')
     
-    # 价格变动特征
+    # 价格变动特征 - 使用滞后值避免数据泄露
     df['price_change'] = grouped['discount_price'].diff()
     df['price_change_pct'] = grouped['discount_price'].pct_change()
     df['price_change_abs'] = df['price_change'].abs()
     
-    # 价格统计特征（7天窗口）
+    # 价格统计特征（7天窗口）- 使用shift避免使用未来数据
     df['price_mean_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).mean()
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).mean()
     )
     df['price_std_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).std()
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).std()
     )
     df['price_min_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).min()
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).min()
     )
     df['price_max_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).max()
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).max()
     )
     
-    # 价格分位数特征
+    # 价格分位数特征 - 使用shift避免使用未来数据
     df['price_quantile_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).apply(
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).apply(
             lambda y: pd.Series(y).rank(pct=True).iloc[-1]
         )
     )
     
-    # 价格趋势特征 - 使用更稳健的方法
+    # 价格趋势特征 - 使用shift避免使用未来数据
     def safe_trend(x):
         try:
-            if len(x) < 2:  # 如果数据点少于2个，返回0
+            if len(x) < 2:
                 return 0
-            # 使用简单的一阶差分平均值作为趋势
             return np.mean(np.diff(x))
         except:
             return 0
     
     df['price_trend_7d'] = grouped['discount_price'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).apply(safe_trend)
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).apply(safe_trend)
     )
     
     return df
@@ -174,29 +173,29 @@ def add_promotion_features(df):
     # 按sku_id分组计算特征
     grouped = df.groupby('sku_id')
     
-    # 促销频率特征
+    # 促销频率特征 - 使用shift避免使用未来数据
     df['promo_freq_7d'] = grouped['is_promotion'].transform(
-        lambda x: x.rolling(window=7, min_periods=1).mean()
+        lambda x: x.shift(1).rolling(window=7, min_periods=1).mean()
     )
     df['promo_freq_30d'] = grouped['is_promotion'].transform(
-        lambda x: x.rolling(window=30, min_periods=1).mean()
+        lambda x: x.shift(1).rolling(window=30, min_periods=1).mean()
     )
     
-    # 促销持续时间
+    # 促销持续时间 - 使用shift避免使用未来数据
     df['promo_duration'] = grouped['is_promotion'].transform(
-        lambda x: x.groupby((x != x.shift()).cumsum()).cumsum()
+        lambda x: x.shift(1).groupby((x.shift(1) != x.shift(1).shift()).cumsum()).cumsum()
     )
     
-    # 促销间隔
+    # 促销间隔 - 使用shift避免使用未来数据
     df['days_since_last_promo'] = grouped['is_promotion'].transform(
-        lambda x: x.groupby((x == 1).cumsum()).cumcount()
+        lambda x: x.shift(1).groupby((x.shift(1) == 1).cumsum()).cumcount()
     )
     
-    # 促销效果特征
-    df['price_during_promo'] = df['discount_price'] * df['is_promotion']
-    df['price_outside_promo'] = df['discount_price'] * (1 - df['is_promotion'])
+    # 促销效果特征 - 使用shift避免使用未来数据
+    df['price_during_promo'] = df['discount_price'].shift(1) * df['is_promotion'].shift(1)
+    df['price_outside_promo'] = df['discount_price'].shift(1) * (1 - df['is_promotion'].shift(1))
     
-    # 促销价格变化
+    # 促销价格变化 - 使用shift避免使用未来数据
     df['promo_price_change'] = df['price_during_promo'].diff()
     df['promo_price_change_pct'] = df['price_during_promo'].pct_change()
     
@@ -247,12 +246,38 @@ def main():
     # 删除包含NaN的行
     df = df.dropna()
     
+    # 按时间分割数据
+    print("\n正在分割训练集和测试集...")
+    df = df.sort_values(['sku_id', 'dt'])
+    split_date = pd.to_datetime('2024-12-31')
+    
+    # 分割数据集
+    train_df = df[df['dt'] < split_date]
+    test_df = df[df['dt'] >= split_date]
+    
     # 保存处理后的数据
-    output_file = '预处理后的商品数据.csv'
-    df.to_csv(output_file, index=False)
+    train_file = '预处理后的商品数据_训练集.csv'
+    test_file = '预处理后的商品数据_测试集.csv'
+    
+    train_df.to_csv(train_file, index=False)
+    test_df.to_csv(test_file, index=False)
+    
     print(f"\n数据预处理完成！")
-    print(f"处理后的数据已保存到：{output_file}")
-    print(f"特征数量：{len(df.columns)}")
+    print(f"训练集数据已保存到：{train_file}")
+    print(f"测试集数据已保存到：{test_file}")
+    print(f"\n数据集统计信息：")
+    print(f"训练集样本数：{len(train_df)}")
+    print(f"测试集样本数：{len(test_df)}")
+    print(f"训练集商品数：{train_df['sku_id'].nunique()}")
+    print(f"测试集商品数：{test_df['sku_id'].nunique()}")
+    print(f"训练集时间范围：{train_df['dt'].min()} 至 {train_df['dt'].max()}")
+    print(f"测试集时间范围：{test_df['dt'].min()} 至 {test_df['dt'].max()}")
+    print(f"\n价格变动分布：")
+    print("训练集：")
+    print((train_df['price_change'] != 0).value_counts(normalize=True))
+    print("\n测试集：")
+    print((test_df['price_change'] != 0).value_counts(normalize=True))
+    print(f"\n特征数量：{len(df.columns)}")
     print("\n特征列表：")
     print(df.columns.tolist())
 

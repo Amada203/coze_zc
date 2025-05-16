@@ -10,8 +10,8 @@ print(f"数据形状: {df.shape}")
 print(f"SKU数量: {df['sku_id'].nunique()}")
 print(f"日期范围: {df['dt'].min()} 至 {df['dt'].max()}")
 print(f"价格范围: {df['page_price'].min():.2f} 至 {df['page_price'].max():.2f}")
-print(f"促销商品数量: {df[df['is_promotion']==1].shape[0]}")
-print(f"非促销商品数量: {df[df['is_promotion']==0].shape[0]}")
+print(f"促销商品记录数: {df[df['is_promotion']==1].shape[0]}")
+print(f"非促销商品记录数: {df[df['is_promotion']==0].shape[0]}")
 
 
 # 转换日期格式
