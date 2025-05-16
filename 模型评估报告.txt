@@ -1,0 +1,46 @@
+K折交叉验证评估结果:
+平均准确率: 0.7347 (±0.0050)
+平均AUC: 1.0000 (±0.0000)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.7271
+  AUC: 1.0000
+第 2 折:
+  准确率: 0.7406
+  AUC: 1.0000
+第 3 折:
+  准确率: 0.7359
+  AUC: 1.0000
+第 4 折:
+  准确率: 0.7389
+  AUC: 1.0000
+第 5 折:
+  准确率: 0.7310
+  AUC: 1.0000
+
+独立测试集评估结果:
+准确率: 0.7319
+AUC: 1.0000
+
+特征重要性:
+price_change_magnitude: 1
+price_volatility_7d: 1
+page_price: 0
+quarter: 0
+yhat_lower: 0
+yhat: 0
+weekly: 0
+yearly: 0
+trend: 0
+is_month_end: 0
+is_month_start: 0
+month: 0
+is_promotion: 0
+is_weekend: 0
+weekday: 0
+price_quantile_7d: 0
+price_ma7: 0
+price_change_direction: 0
+price_change_freq_7d: 0
+yhat_upper: 0
