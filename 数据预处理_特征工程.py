@@ -4,6 +4,11 @@ from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 
+def safe_pct_change(series):
+    prev = series.shift(1)
+    pct = (series - prev) / prev.replace(0, np.nan)
+    return pct
+
 def load_data():
     """加载原始数据"""
     print("正在加载数据...")
@@ -127,29 +132,34 @@ def add_price_features(df):
     
     # 价格变动特征 - 使用滞后值避免数据泄露
     df['price_change'] = grouped['discount_price'].diff()
-    df['price_change_pct'] = grouped['discount_price'].pct_change()
+    df['price_change'] = df['price_change'].replace([np.inf, -np.inf], np.nan)
+    
+    # 百分比变化，分母为0时为nan
+    df['price_change_pct'] = grouped['discount_price'].transform(safe_pct_change)
+    df['price_change_pct'] = df['price_change_pct'].replace([np.inf, -np.inf], np.nan)
+    
     df['price_change_abs'] = df['price_change'].abs()
     
     # 价格统计特征（7天窗口）- 使用shift避免使用未来数据
     df['price_mean_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).mean()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     df['price_std_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).std()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     df['price_min_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).min()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     df['price_max_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).max()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     # 价格分位数特征 - 使用shift避免使用未来数据
     df['price_quantile_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).apply(
             lambda y: pd.Series(y).rank(pct=True).iloc[-1]
         )
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     # 价格趋势特征 - 使用shift避免使用未来数据
     def safe_trend(x):
@@ -162,7 +172,7 @@ def add_price_features(df):
     
     df['price_trend_7d'] = grouped['discount_price'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).apply(safe_trend)
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     return df
 
@@ -176,28 +186,30 @@ def add_promotion_features(df):
     # 促销频率特征 - 使用shift避免使用未来数据
     df['promo_freq_7d'] = grouped['is_promotion'].transform(
         lambda x: x.shift(1).rolling(window=7, min_periods=1).mean()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     df['promo_freq_30d'] = grouped['is_promotion'].transform(
         lambda x: x.shift(1).rolling(window=30, min_periods=1).mean()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     # 促销持续时间 - 使用shift避免使用未来数据
     df['promo_duration'] = grouped['is_promotion'].transform(
         lambda x: x.shift(1).groupby((x.shift(1) != x.shift(1).shift()).cumsum()).cumsum()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     # 促销间隔 - 使用shift避免使用未来数据
     df['days_since_last_promo'] = grouped['is_promotion'].transform(
         lambda x: x.shift(1).groupby((x.shift(1) == 1).cumsum()).cumcount()
-    )
+    ).replace([np.inf, -np.inf], np.nan)
     
     # 促销效果特征 - 使用shift避免使用未来数据
-    df['price_during_promo'] = df['discount_price'].shift(1) * df['is_promotion'].shift(1)
-    df['price_outside_promo'] = df['discount_price'].shift(1) * (1 - df['is_promotion'].shift(1))
+    df['price_during_promo'] = (df['discount_price'].shift(1) * df['is_promotion'].shift(1)).replace([np.inf, -np.inf], np.nan)
+    df['price_outside_promo'] = (df['discount_price'].shift(1) * (1 - df['is_promotion'].shift(1))).replace([np.inf, -np.inf], np.nan)
     
     # 促销价格变化 - 使用shift避免使用未来数据
-    df['promo_price_change'] = df['price_during_promo'].diff()
-    df['promo_price_change_pct'] = df['price_during_promo'].pct_change()
+    df['promo_price_change'] = df['price_during_promo'].diff().replace([np.inf, -np.inf], np.nan)
+    
+    # 百分比变化，分母为0时为nan
+    df['promo_price_change_pct'] = grouped['price_during_promo'].transform(safe_pct_change).replace([np.inf, -np.inf], np.nan)
     
     return df
 
@@ -206,14 +218,14 @@ def add_interaction_features(df):
     print("正在添加特征交互项...")
     
     # 价格与促销的交互
-    df['price_promo_interaction'] = df['discount_price'] * df['is_promotion']
+    df['price_promo_interaction'] = (df['discount_price'] * df['is_promotion']).replace([np.inf, -np.inf], np.nan)
     
     # 时间与促销的交互
-    df['weekday_promo_interaction'] = df['weekday'] * df['is_promotion']
-    df['month_promo_interaction'] = df['month'] * df['is_promotion']
+    df['weekday_promo_interaction'] = (df['weekday'] * df['is_promotion']).replace([np.inf, -np.inf], np.nan)
+    df['month_promo_interaction'] = (df['month'] * df['is_promotion']).replace([np.inf, -np.inf], np.nan)
     
     # 价格趋势与促销的交互
-    df['price_trend_promo_interaction'] = df['price_trend_7d'] * df['is_promotion']
+    df['price_trend_promo_interaction'] = (df['price_trend_7d'] * df['is_promotion']).replace([np.inf, -np.inf], np.nan)
     
     return df
 
@@ -226,9 +238,9 @@ def add_lag_features(df):
     
     # 价格滞后特征
     for lag in [1, 3, 7, 14, 30]:
-        df[f'price_lag_{lag}d'] = grouped['discount_price'].shift(lag)
-        df[f'price_change_lag_{lag}d'] = grouped['price_change'].shift(lag)
-        df[f'is_promotion_lag_{lag}d'] = grouped['is_promotion'].shift(lag)
+        df[f'price_lag_{lag}d'] = grouped['discount_price'].shift(lag).replace([np.inf, -np.inf], np.nan)
+        df[f'price_change_lag_{lag}d'] = grouped['price_change'].shift(lag).replace([np.inf, -np.inf], np.nan)
+        df[f'is_promotion_lag_{lag}d'] = grouped['is_promotion'].shift(lag).replace([np.inf, -np.inf], np.nan)
     
     return df
 
@@ -242,6 +254,16 @@ def main():
     df = add_promotion_features(df)
     df = add_interaction_features(df)
     df = add_lag_features(df)
+    
+    # 归一化前统一处理inf和nan
+    df = df.replace([np.inf, -np.inf], np.nan)
+    df = df.fillna(0)
+    
+    # describe和isinf检查
+    print("\n特征分布统计：")
+    print(df.describe())
+    print("\n每列inf数量：")
+    print(np.isinf(df).sum())
     
     # 删除包含NaN的行
     df = df.dropna()
