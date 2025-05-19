@@ -21,7 +21,7 @@ df['dt'] = pd.to_datetime(df['dt'])
 results = []
 for sku_id, group in df.groupby('sku_id'):
     # 准备prophet所需格式
-    prophet_df = group[['dt', 'page_price']].rename(columns={'dt': 'ds', 'page_price': 'y'})
+    prophet_df = group[['dt', 'discount_price']].rename(columns={'dt': 'ds', 'discount_price': 'y'})
     
     # 初始化并拟合prophet模型
     model = Prophet(yearly_seasonality=True, daily_seasonality=False, weekly_seasonality=True)
