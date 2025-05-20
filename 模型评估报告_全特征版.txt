@@ -1,0 +1,64 @@
+K折交叉验证评估结果:
+平均准确率: 0.8676 (±0.0242)
+平均AUC: 0.9410 (±0.0209)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.8239
+  AUC: 0.9023
+第 2 折:
+  准确率: 0.8827
+  AUC: 0.9497
+第 3 折:
+  准确率: 0.8605
+  AUC: 0.9397
+第 4 折:
+  准确率: 0.8776
+  AUC: 0.9486
+第 5 折:
+  准确率: 0.8931
+  AUC: 0.9645
+
+独立测试集评估结果:
+XGBoost模型准确率: 0.8540
+XGBoost模型AUC: 0.8841
+
+特征重要性:
+yhat_residual: 10912.0
+discount_price_lag_1: 6840.0
+discount_price: 6087.0
+discount_price_trend_7: 5216.0
+yhat_diff: 4516.0
+discount_price_std_7: 3901.0
+month: 3531.0
+page_price: 3230.0
+day: 3173.0
+promo_freq_30: 2982.0
+yhat_upper: 2793.0
+discount_price_promo_interaction: 2341.0
+yhat_lower: 2317.0
+discount_price_change_pct: 2288.0
+discount_price_change_abs: 2066.0
+discount_price_lag_30: 1927.0
+promo_freq_7: 1880.0
+discount_price_min_7: 1873.0
+discount_price_mean_7: 1750.0
+discount_price_lag_7: 1705.0
+weekday: 1662.0
+discount_price_change: 1628.0
+discount_price_lag_14: 1510.0
+yhat: 1440.0
+is_promotion: 1437.0
+discount_price_max_7: 1417.0
+discount_price_lag_3: 1394.0
+discount_price_change_lag_1: 1077.0
+discount_price_change_lag_7: 943.0
+year: 871.0
+discount_price_change_lag_14: 751.0
+discount_price_change_lag_3: 682.0
+discount_price_change_lag_30: 426.0
+quarter: 327.0
+is_promotion_period: 214.0
+is_before_promotion: 104.0
+is_weekend: 61.0
+is_double_12: 14.0
