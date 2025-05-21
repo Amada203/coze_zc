@@ -1,0 +1,97 @@
+K折交叉验证评估结果:
+平均准确率: 0.7772 (±0.0082)
+平均AUC: 1.0000 (±0.0000)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.7629
+  AUC: 1.0000
+第 2 折:
+  准确率: 0.7770
+  AUC: 1.0000
+第 3 折:
+  准确率: 0.7885
+  AUC: 1.0000
+第 4 折:
+  准确率: 0.7785
+  AUC: 1.0000
+第 5 折:
+  准确率: 0.7789
+  AUC: 1.0000
+
+独立测试集评估结果:
+LightGBM模型准确率: 0.5225
+LightGBM模型AUC: 1.0000
+融合模型准确率: 0.4775
+融合模型AUC: 1.0000
+
+特征重要性:
+page_price: 5
+price_change_pct: 1
+price_change_lag_1d: 0
+price_lag_7d: 0
+is_promotion_lag_3d: 0
+price_change_lag_3d: 0
+price_lag_3d: 0
+is_promotion_lag_1d: 0
+price_lag_1d: 0
+is_promotion_lag_7d: 0
+price_trend_promo_interaction: 0
+month_promo_interaction: 0
+weekday_promo_interaction: 0
+price_promo_interaction: 0
+promo_price_change_pct: 0
+promo_price_change: 0
+price_change_lag_7d: 0
+price_lag_14d: 0
+price_during_promo: 0
+yhat: 0
+yhat_residual: 0
+yhat_ci_width: 0
+yhat_pct_change: 0
+yhat_diff: 0
+yhat_upper: 0
+yhat_lower: 0
+weekly: 0
+price_change_lag_14d: 0
+yearly: 0
+trend: 0
+is_promotion_lag_30d: 0
+price_change_lag_30d: 0
+price_lag_30d: 0
+is_promotion_lag_14d: 0
+price_outside_promo: 0
+days_since_last_promo: 0
+discount_price: 0
+is_618: 0
+is_promotion: 0
+year: 0
+month: 0
+day: 0
+weekday: 0
+quarter: 0
+is_weekend: 0
+is_month_start: 0
+is_month_end: 0
+is_quarter_start: 0
+is_quarter_end: 0
+is_promotion_period: 0
+is_double_11: 0
+is_double_12: 0
+is_spring_festival: 0
+promo_duration: 0
+is_womens_day: 0
+is_labor_day: 0
+is_national_day: 0
+is_before_promotion: 0
+is_after_promotion: 0
+price_change_abs: 0
+price_mean_7d: 0
+price_std_7d: 0
+price_min_7d: 0
+price_max_7d: 0
+price_quantile_7d: 0
+price_trend_7d: 0
+promo_freq_7d: 0
+promo_freq_30d: 0
+prophet_price_change: 0

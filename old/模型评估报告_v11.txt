@@ -1,0 +1,40 @@
+K折交叉验证评估结果:
+平均准确率: 0.8416 (±0.0021)
+平均AUC: 0.9180 (±0.0011)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.8434
+  AUC: 0.9161
+第 2 折:
+  准确率: 0.8447
+  AUC: 0.9175
+第 3 折:
+  准确率: 0.8396
+  AUC: 0.9189
+第 4 折:
+  准确率: 0.8397
+  AUC: 0.9187
+第 5 折:
+  准确率: 0.8405
+  AUC: 0.9188
+
+独立测试集评估结果:
+XGBoost模型准确率: 0.6590
+XGBoost模型AUC: 0.7879
+
+特征重要性:
+discount_price_lag_1: 14381.0
+yhat: 11501.0
+yhat_residual: 11241.0
+yhat_diff: 6270.0
+yearly: 6060.0
+discount_price_trend_7: 5074.0
+discount_price_std_7: 4939.0
+weekly: 4891.0
+trend: 4834.0
+discount_price_min_7: 3905.0
+discount_price_lag_3: 3261.0
+discount_price_max_7: 2942.0
+discount_price_mean_7: 2753.0
+discount_price_lag_7: 2220.0

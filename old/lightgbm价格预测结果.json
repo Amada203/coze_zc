@@ -1,0 +1,18 @@
+{
+    "accuracy": 0.9206896551724137,
+    "classification_report": "              precision    recall  f1-score   support\n\n           0       0.85      0.81      0.83        68\n           1       0.94      0.95      0.95       222\n\n    accuracy                           0.92       290\n   macro avg       0.89      0.88      0.89       290\nweighted avg       0.92      0.92      0.92       290\n",
+    "feature_importance": [
+        1586,
+        524,
+        452,
+        0,
+        383
+    ],
+    "feature_names": [
+        "trend",
+        "yearly",
+        "weekly",
+        "additive_terms",
+        "multiplicative_terms"
+    ]
+}

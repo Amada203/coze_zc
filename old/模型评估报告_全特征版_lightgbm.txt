@@ -1,0 +1,58 @@
+K折交叉验证评估结果:
+平均准确率: 0.8440 (±0.0283)
+平均AUC: 0.9226 (±0.0198)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.8017
+  AUC: 0.8893
+第 2 折:
+  准确率: 0.8695
+  AUC: 0.9384
+第 3 折:
+  准确率: 0.8265
+  AUC: 0.9160
+第 4 折:
+  准确率: 0.8431
+  AUC: 0.9232
+第 5 折:
+  准确率: 0.8793
+  AUC: 0.9463
+
+独立测试集评估结果:
+LightGBM模型准确率: 0.7778
+LightGBM模型AUC: 0.7852
+
+特征重要性:
+yhat_residual: 4986
+discount_price_lag_1: 3156
+discount_price_trend_7: 2627
+yhat_upper: 1645
+discount_price_std_7: 1307
+yhat: 1234
+month: 1184
+day: 1100
+yhat_diff: 1087
+discount_price_change_pct: 1048
+promo_freq_30: 968
+discount_price_change: 860
+yhat_lower: 762
+discount_price_change_abs: 685
+discount_price_lag_7: 669
+discount_price_promo_interaction: 629
+weekday: 562
+discount_price_lag_30: 551
+discount_price_change_lag_1: 542
+discount_price_change_lag_7: 499
+discount_price_min_7: 444
+discount_price_lag_14: 400
+discount_price_change_lag_14: 385
+discount_price_lag_3: 374
+promo_freq_7: 352
+discount_price_mean_7: 340
+discount_price_max_7: 334
+year: 311
+discount_price_change_lag_30: 248
+discount_price_change_lag_3: 194
+quarter: 65
+is_weekend: 27

@@ -1,0 +1,100 @@
+K折交叉验证评估结果:
+平均准确率: 0.7880 (±0.0253)
+平均AUC: 0.8513 (±0.0191)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.7835
+  AUC: 0.8269
+  精确率: 0.6627
+  召回率(重点): 0.7031
+  F1分数: 0.6823
+  PR-AUC: 0.7194
+  Logloss: 0.4951
+  混淆矩阵: [[7570, 1626], [1349, 3194]]
+第 2 折:
+  准确率: 0.8311
+  AUC: 0.8791
+  精确率: 0.8261
+  召回率(重点): 0.5027
+  F1分数: 0.6251
+  PR-AUC: 0.7543
+  Logloss: 0.4901
+  混淆矩阵: [[9485, 407], [1913, 1934]]
+第 3 折:
+  准确率: 0.7624
+  AUC: 0.8374
+  精确率: 0.6390
+  召回率(重点): 0.7786
+  F1分数: 0.7019
+  PR-AUC: 0.7499
+  Logloss: 0.5138
+  混淆矩阵: [[6630, 2172], [1093, 3844]]
+第 4 折:
+  准确率: 0.7644
+  AUC: 0.8466
+  精确率: 0.6214
+  召回率(重点): 0.7781
+  F1分数: 0.6910
+  PR-AUC: 0.7579
+  Logloss: 0.4986
+  混淆矩阵: [[6883, 2205], [1032, 3619]]
+第 5 折:
+  准确率: 0.7986
+  AUC: 0.8666
+  精确率: 0.6174
+  召回率(重点): 0.7665
+  F1分数: 0.6840
+  PR-AUC: 0.7476
+  Logloss: 0.4536
+  混淆矩阵: [[7978, 1855], [912, 2994]]
+
+独立测试集评估结果:
+LightGBM模型准确率: 0.7723
+LightGBM模型AUC: 0.7662
+LightGBM模型精确率: 0.6951
+LightGBM模型召回率(重点): 0.4316
+LightGBM模型F1分数: 0.5326
+LightGBM模型PR-AUC: 0.6496
+LightGBM模型Logloss: 0.5553
+LightGBM模型混淆矩阵: [[11287, 999], [3000, 2278]]
+
+特征重要性:
+month: 144
+discount_price_trend_7: 119
+promo_freq_30: 117
+day: 99
+discount_price_change: 98
+discount_price_std_7: 85
+weekday: 80
+discount_price_promo_interaction: 73
+yearly: 65
+yhat_diff: 53
+yhat_upper: 53
+discount_price_change_abs: 53
+discount_price_lag_30: 46
+weekly: 44
+discount_price_lag_1: 44
+promo_freq_7: 29
+year: 27
+discount_price_change_pct: 22
+yhat_lower: 21
+discount_price_lag_7: 17
+yhat: 17
+is_month_start: 17
+trend: 16
+discount_price_lag_14: 14
+discount_price_change_lag_1: 14
+quarter: 14
+discount_price_lag_3: 13
+discount_price_min_7: 10
+discount_price_change_lag_3: 9
+discount_price_mean_7: 7
+is_weekend: 6
+discount_price_change_lag_14: 6
+discount_price_change_lag_7: 4
+discount_price_max_7: 3
+is_after_promotion: 1
+is_double_12: 0
+is_before_promotion: 0
+discount_price_change_lag_30: 0

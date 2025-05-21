@@ -1,0 +1,101 @@
+K折交叉验证评估结果:
+平均准确率: 0.7838 (±0.0206)
+平均AUC: 0.8513 (±0.0200)
+
+各折详细结果:
+第 1 折:
+  准确率: 0.7896
+  AUC: 0.8249
+  精确率: 0.6859
+  召回率(重点): 0.6711
+  F1分数: 0.6785
+  PR-AUC: 0.7169
+  Logloss: 0.5421
+  混淆矩阵: [[7800, 1396], [1494, 3049]]
+第 2 折:
+  准确率: 0.8215
+  AUC: 0.8848
+  精确率: 0.6609
+  召回率(重点): 0.7442
+  F1分数: 0.7001
+  PR-AUC: 0.7682
+  Logloss: 0.4181
+  混淆矩阵: [[8423, 1469], [984, 2863]]
+第 3 折:
+  准确率: 0.7641
+  AUC: 0.8395
+  精确率: 0.6439
+  召回率(重点): 0.7685
+  F1分数: 0.7007
+  PR-AUC: 0.7551
+  Logloss: 0.5086
+  混淆矩阵: [[6704, 2098], [1143, 3794]]
+第 4 折:
+  准确率: 0.7701
+  AUC: 0.8505
+  精确率: 0.6312
+  召回率(重点): 0.7714
+  F1分数: 0.6943
+  PR-AUC: 0.7635
+  Logloss: 0.4888
+  混淆矩阵: [[6992, 2096], [1063, 3588]]
+第 5 折:
+  准确率: 0.7736
+  AUC: 0.8568
+  精确率: 0.5778
+  召回率(重点): 0.7570
+  F1分数: 0.6554
+  PR-AUC: 0.7316
+  Logloss: 0.5109
+  混淆矩阵: [[7672, 2161], [949, 2957]]
+
+独立测试集评估结果:
+XGBoost模型准确率: 0.7946
+XGBoost模型AUC: 0.7923
+XGBoost模型精确率: 0.6853
+XGBoost模型召回率(重点): 0.5854
+XGBoost模型F1分数: 0.6314
+XGBoost模型PR-AUC: 0.7130
+XGBoost模型Logloss: 0.5601
+XGBoost模型混淆矩阵: [[10867, 1419], [2188, 3090]]
+
+特征重要性:
+month: 907.0
+day: 726.0
+promo_freq_30: 622.0
+discount_price_std_7: 461.0
+yhat_diff: 450.0
+discount_price_trend_7: 429.0
+yearly: 386.0
+weekly: 345.0
+discount_price_promo_interaction: 344.0
+weekday: 318.0
+discount_price_change_pct: 308.0
+discount_price_change_abs: 299.0
+promo_freq_7: 280.0
+discount_price_lag_30: 237.0
+trend: 192.0
+yhat_upper: 178.0
+discount_price_change: 171.0
+yhat_lower: 168.0
+discount_price_min_7: 167.0
+year: 164.0
+discount_price_lag_1: 163.0
+discount_price_change_lag_3: 151.0
+discount_price_change_lag_1: 145.0
+discount_price_lag_7: 140.0
+discount_price_change_lag_7: 131.0
+discount_price_lag_3: 119.0
+discount_price_lag_14: 114.0
+yhat: 110.0
+discount_price_change_lag_14: 101.0
+discount_price_mean_7: 100.0
+quarter: 57.0
+is_promotion_period: 55.0
+discount_price_max_7: 54.0
+is_after_promotion: 45.0
+discount_price_change_lag_30: 41.0
+is_before_promotion: 38.0
+is_weekend: 12.0
+is_double_12: 11.0
+is_month_start: 11.0
